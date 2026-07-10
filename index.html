@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media Agent — IBM Granite 4</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --text: #e8eaf6;
+      --muted: #8892b0;
+      --accent: #5b8af5;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --twitter: #1d9bf0;
+      --linkedin: #0a66c2;
+      --instagram: #e1306c;
+      --facebook: #1877f2;
+      --tiktok: #ff0050;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --sidebar-w: 260px;
+      --font: -apple-system, "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── SIDEBAR ─────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .logo-text { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .logo-sub  { font-size: 11px; color: var(--muted); }
+
+    .sidebar-section { padding: 16px 12px 8px; }
+    .sidebar-label   { font-size: 10px; font-weight: 600; letter-spacing: .8px; color: var(--muted); text-transform: uppercase; padding: 0 6px 8px; }
+
+    .platform-btn {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 13.5px; font-weight: 500;
+      color: var(--muted); border: none; background: none; width: 100%;
+      text-align: left; transition: all .15s;
+    }
+    .platform-btn:hover { background: var(--surface2); color: var(--text); }
+    .platform-btn.active { background: var(--surface2); color: var(--text); }
+
+    .platform-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-twitter    { background: var(--twitter); }
+    .dot-linkedin   { background: var(--linkedin); }
+    .dot-instagram  { background: var(--instagram); }
+    .dot-facebook   { background: var(--facebook); }
+    .dot-tiktok     { background: var(--tiktok); }
+    .dot-all        { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+
+    .sidebar-divider { height: 1px; background: var(--border); margin: 8px 12px; }
+
+    .history-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: var(--radius-sm);
+      cursor: pointer; font-size: 12.5px; color: var(--muted);
+      border: none; background: none; width: 100%; text-align: left;
+      transition: all .15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .history-item:hover { background: var(--surface2); color: var(--text); }
+    .history-icon { font-size: 13px; flex-shrink: 0; }
+
+    .sidebar-bottom {
+      margin-top: auto; padding: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .model-badge {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; background: var(--surface2);
+      border-radius: var(--radius-sm); font-size: 12px;
+    }
+    .model-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .model-info { line-height: 1.3; }
+    .model-name { font-weight: 600; color: var(--text); font-size: 12px; }
+    .model-provider { font-size: 10.5px; color: var(--muted); }
+
+    /* ── MAIN ─────────────────────────────────── */
+    .main {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+    }
+
+    /* ── TOP BAR ─────────────────────────────── */
+    .topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      background: var(--surface); flex-shrink: 0;
+    }
+
+    .platform-tabs { display: flex; gap: 4px; flex: 1; flex-wrap: wrap; }
+
+    .tab-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12.5px; font-weight: 600; cursor: pointer;
+      border: 1.5px solid var(--border); background: none;
+      color: var(--muted); transition: all .15s;
+    }
+    .tab-btn:hover { border-color: var(--muted); color: var(--text); }
+    .tab-btn.active { color: #fff; border-color: transparent; }
+    .tab-btn.active.tw { background: var(--twitter); }
+    .tab-btn.active.li { background: var(--linkedin); }
+    .tab-btn.active.ig { background: var(--instagram); }
+    .tab-btn.active.fb { background: var(--facebook); }
+    .tab-btn.active.tt { background: var(--tiktok); }
+    .tab-btn.active.all { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+
+    .tab-icon { font-size: 14px; }
+
+    .topbar-actions { display: flex; gap: 8px; }
+    .icon-btn {
+      width: 34px; height: 34px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: none;
+      color: var(--muted); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; font-size: 15px;
+      transition: all .15s;
+    }
+    .icon-btn:hover { background: var(--surface2); color: var(--text); }
+
+    /* ── CONTENT AREA ────────────────────────── */
+    .content-area {
+      flex: 1; display: flex; overflow: hidden;
+    }
+
+    /* ── CHAT PANEL ──────────────────────────── */
+    .chat-panel {
+      flex: 1; display: flex; flex-direction: column; overflow: hidden;
+      border-right: 1px solid var(--border);
+    }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 24px 20px;
+      display: flex; flex-direction: column; gap: 20px;
+      scroll-behavior: smooth;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* Welcome screen */
+    .welcome {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; flex: 1; text-align: center; padding: 40px;
+      gap: 20px;
+    }
+    .welcome-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 20px; display: flex; align-items: center;
+      justify-content: center; font-size: 34px;
+    }
+    .welcome h2 { font-size: 24px; font-weight: 700; }
+    .welcome p  { font-size: 14px; color: var(--muted); max-width: 400px; line-height: 1.7; }
+
+    .quick-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 480px;
+    }
+    .qa-btn {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      text-align: left; cursor: pointer; transition: all .15s;
+      color: var(--text); font-family: var(--font);
+    }
+    .qa-btn:hover { border-color: var(--accent); background: var(--surface2); }
+    .qa-icon { font-size: 18px; margin-bottom: 6px; display: block; }
+    .qa-title { font-size: 13px; font-weight: 600; display: block; }
+    .qa-desc  { font-size: 11.5px; color: var(--muted); margin-top: 2px; display: block; }
+
+    /* Messages */
+    .msg { display: flex; gap: 12px; max-width: 100%; }
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .msg.user .msg-avatar   { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+    .msg.agent .msg-avatar  { background: var(--surface2); border: 1.5px solid var(--border); }
+
+    .msg-content { flex: 1; max-width: calc(100% - 44px); }
+
+    .msg-bubble {
+      padding: 12px 15px; border-radius: var(--radius);
+      font-size: 13.5px; line-height: 1.65; word-break: break-word;
+    }
+    .msg.user  .msg-bubble { background: var(--accent); color: #fff; margin-left: auto; max-width: 80%; border-radius: 12px 12px 4px 12px; }
+    .msg.agent .msg-bubble { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px 12px 12px 12px; }
+
+    .msg-meta { font-size: 11px; color: var(--muted); margin-top: 4px; padding: 0 2px; }
+    .msg.user .msg-meta { text-align: right; }
+
+    /* Generated post card inside agent bubble */
+    .post-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; margin-top: 10px;
+      position: relative;
+    }
+    .post-card-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+    }
+    .post-platform-tag {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: .5px;
+      text-transform: uppercase; padding: 3px 8px;
+      border-radius: 5px;
+    }
+    .post-platform-tag.tw { background: rgba(29,155,240,.15); color: var(--twitter); }
+    .post-platform-tag.li { background: rgba(10,102,194,.15); color: #4a9ede; }
+    .post-platform-tag.ig { background: rgba(225,48,108,.15); color: var(--instagram); }
+    .post-platform-tag.fb { background: rgba(24,119,242,.15); color: #60a5fa; }
+    .post-platform-tag.tt { background: rgba(255,0,80,.15); color: var(--tiktok); }
+
+    .post-text { font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+    .post-hashtags { margin-top: 8px; font-size: 13px; color: var(--accent); }
+    .post-chars {
+      margin-top: 8px; font-size: 11.5px; color: var(--muted);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .chars-bar {
+      flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden;
+    }
+    .chars-fill { height: 100%; border-radius: 2px; transition: width .3s; }
+    .chars-fill.ok      { background: var(--green); }
+    .chars-fill.warn    { background: var(--yellow); }
+    .chars-fill.danger  { background: var(--red); }
+
+    .post-actions {
+      display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+    }
+    .post-action-btn {
+      display: flex; align-items: center; gap: 5px;
+      padding: 5px 11px; border-radius: 6px; font-size: 12px;
+      border: 1.5px solid var(--border); background: none;
+      color: var(--muted); cursor: pointer; font-family: var(--font);
+      transition: all .15s;
+    }
+    .post-action-btn:hover { background: var(--surface); color: var(--text); border-color: var(--accent); }
+    .post-action-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex; align-items: center; gap: 5px; padding: 12px 15px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 4px 12px 12px 12px; width: fit-content;
+    }
+    .typing-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--muted); animation: bounce .9s infinite;
+    }
+    .typing-dot:nth-child(2) { animation-delay: .15s; }
+    .typing-dot:nth-child(3) { animation-delay: .3s; }
+    @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+    /* ── INPUT AREA ──────────────────────────── */
+    .input-area {
+      padding: 16px 20px; border-top: 1px solid var(--border);
+      background: var(--surface); flex-shrink: 0;
+    }
+
+    .input-options {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .option-label { font-size: 11.5px; color: var(--muted); font-weight: 500; }
+
+    .select-pill {
+      appearance: none; -webkit-appearance: none;
+      background: var(--surface2); border: 1.5px solid var(--border);
+      color: var(--text); font-size: 12px; padding: 4px 24px 4px 10px;
+      border-radius: 20px; cursor: pointer; outline: none;
+      font-family: var(--font);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238892b0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      transition: border-color .15s;
+    }
+    .select-pill:hover, .select-pill:focus { border-color: var(--accent); }
+    .select-pill option { background: var(--surface2); }
+
+    .input-row {
+      display: flex; gap: 10px; align-items: flex-end;
+    }
+
+    .input-box {
+      flex: 1; background: var(--surface2); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      color: var(--text); font-size: 13.5px; font-family: var(--font);
+      resize: none; outline: none; line-height: 1.5; min-height: 48px; max-height: 160px;
+      transition: border-color .15s;
+    }
+    .input-box::placeholder { color: var(--muted); }
+    .input-box:focus { border-color: var(--accent); }
+
+    .send-btn {
+      width: 46px; height: 46px; border-radius: var(--radius); flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; cursor: pointer; display: flex;
+      align-items: center; justify-content: center; font-size: 18px;
+      transition: opacity .15s; color: #fff;
+    }
+    .send-btn:hover   { opacity: .85; }
+    .send-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── RIGHT PANEL ─────────────────────────── */
+    .right-panel {
+      width: 320px; display: flex; flex-direction: column;
+      flex-shrink: 0; overflow: hidden;
+    }
+
+    .right-header {
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      font-size: 13px; font-weight: 700; color: var(--text);
+      background: var(--surface); display: flex; align-items: center; gap: 8px;
+    }
+
+    .right-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .right-body::-webkit-scrollbar { width: 4px; }
+    .right-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* Post preview in right panel */
+    .preview-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; margin-bottom: 14px;
+    }
+    .preview-card-header {
+      padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; flex-shrink: 0;
+    }
+    .preview-user-info { line-height: 1.3; }
+    .preview-name { font-size: 13px; font-weight: 600; }
+    .preview-handle { font-size: 11.5px; color: var(--muted); }
+    .preview-body { padding: 12px; font-size: 13.5px; line-height: 1.65; color: var(--text); white-space: pre-wrap; min-height: 80px; }
+    .preview-footer {
+      padding: 8px 12px; border-top: 1px solid var(--border);
+      font-size: 11.5px; color: var(--muted); display: flex;
+      align-items: center; justify-content: space-between;
+    }
+
+    /* Tone cards */
+    .tone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .tone-card {
+      padding: 9px 10px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      cursor: pointer; transition: all .15s; text-align: center;
+      font-size: 12px; font-weight: 500; color: var(--muted);
+    }
+    .tone-card:hover { border-color: var(--accent); color: var(--text); }
+    .tone-card.active { border-color: var(--accent); color: var(--accent); background: rgba(91,138,245,.1); }
+    .tone-emoji { font-size: 17px; display: block; margin-bottom: 3px; }
+
+    .section-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .7px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .stat-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 12px;
+    }
+    .stat-val  { font-size: 20px; font-weight: 700; color: var(--text); }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Platform limits */
+    .limit-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 12.5px;
+    }
+    .limit-row:last-child { border-bottom: none; }
+    .limit-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .limit-name { color: var(--text); flex: 1; }
+    .limit-val  { color: var(--muted); font-size: 12px; }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media (max-width: 900px) {
+      .right-panel { display: none; }
+      .sidebar { width: 200px; }
+    }
+    @media (max-width: 640px) {
+      .sidebar { display: none; }
+    }
+
+    /* ── SCROLLBAR global ────────────────────── */
+    * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+    /* ── NOTIFICATION ────────────────────────── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--surface2); border: 1.5px solid var(--green);
+      color: var(--green); padding: 10px 16px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600; z-index: 1000;
+      display: none; align-items: center; gap: 8px;
+      animation: slidein .25s ease;
+    }
+    .toast.show { display: flex; }
+    @keyframes slidein { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🤖</div>
+    <div>
+      <div class="logo-text">Social Agent</div>
+      <div class="logo-sub">Powered by IBM Granite</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Platforms</div>
+    <button class="platform-btn active" onclick="setSidebarPlatform('all', this)">
+      <span class="platform-dot dot-all"></span> All Platforms
+    </button>
+    <button class="platform-btn" onclick="setSidebarPlatform('tw', this)">
+      <span class="platform-dot dot-twitter"></span> Twitter / X
+    </button>
+    <button class="platform-btn" onclick="setSidebarPlatform('li', this)">
+      <span class="platform-dot dot-linkedin"></span> LinkedIn
+    </button>
+    <button class="platform-btn" onclick="setSidebarPlatform('ig', this)">
+      <span class="platform-dot dot-instagram"></span> Instagram
+    </button>
+    <button class="platform-btn" onclick="setSidebarPlatform('fb', this)">
+      <span class="platform-dot dot-facebook"></span> Facebook
+    </button>
+    <button class="platform-btn" onclick="setSidebarPlatform('tt', this)">
+      <span class="platform-dot dot-tiktok"></span> TikTok
+    </button>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Quick Prompts</div>
+    <button class="history-item" onclick="quickPrompt('Write a viral Twitter thread about AI trends in 2025')">
+      <span class="history-icon">🔥</span> AI Trends Thread
+    </button>
+    <button class="history-item" onclick="quickPrompt('Write a professional LinkedIn post about leadership lessons')">
+      <span class="history-icon">💼</span> Leadership Post
+    </button>
+    <button class="history-item" onclick="quickPrompt('Create an engaging Instagram caption for a product launch')">
+      <span class="history-icon">📸</span> Product Launch
+    </button>
+    <button class="history-item" onclick="quickPrompt('Write a Facebook post to announce a community event')">
+      <span class="history-icon">🎉</span> Event Announcement
+    </button>
+    <button class="history-item" onclick="quickPrompt('Create 10 trending hashtags for a fitness brand')">
+      <span class="history-icon">#️⃣</span> Hashtag Generator
+    </button>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="model-badge">
+      <div class="model-dot"></div>
+      <div class="model-info">
+        <div class="model-name">Granite 4 Nano</div>
+        <div class="model-provider">IBM watsonx.ai · eu-de</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ───────────────────────────────────── -->
+<div class="main">
+
+  <!-- Top bar with platform tabs -->
+  <div class="topbar">
+    <div class="platform-tabs">
+      <button class="tab-btn active all" id="tab-all" onclick="setTab('all')">
+        <span class="tab-icon">🌐</span> All
+      </button>
+      <button class="tab-btn tw" id="tab-tw" onclick="setTab('tw')">
+        <span class="tab-icon">𝕏</span> Twitter
+      </button>
+      <button class="tab-btn li" id="tab-li" onclick="setTab('li')">
+        <span class="tab-icon">in</span> LinkedIn
+      </button>
+      <button class="tab-btn ig" id="tab-ig" onclick="setTab('ig')">
+        <span class="tab-icon">📷</span> Instagram
+      </button>
+      <button class="tab-btn fb" id="tab-fb" onclick="setTab('fb')">
+        <span class="tab-icon">f</span> Facebook
+      </button>
+      <button class="tab-btn tt" id="tab-tt" onclick="setTab('tt')">
+        <span class="tab-icon">♪</span> TikTok
+      </button>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" title="Clear chat" onclick="clearChat()">🗑</button>
+      <button class="icon-btn" title="Export posts" onclick="exportPosts()">⬇</button>
+    </div>
+  </div>
+
+  <!-- Content area -->
+  <div class="content-area">
+
+    <!-- Chat panel -->
+    <div class="chat-panel">
+      <div class="chat-messages" id="chat-messages">
+
+        <!-- Welcome -->
+        <div class="welcome" id="welcome-screen">
+          <div class="welcome-icon">✨</div>
+          <h2>Social Media Agent</h2>
+          <p>Generate platform-optimised posts, captions, threads, and hashtags instantly using IBM Granite 4 AI. Select a platform and describe your idea.</p>
+          <div class="quick-actions">
+            <button class="qa-btn" onclick="quickPrompt('Write a viral Twitter thread with 5 tweets about the future of AI')">
+              <span class="qa-icon">🔥</span>
+              <span class="qa-title">Viral Thread</span>
+              <span class="qa-desc">Twitter/X thread format</span>
+            </button>
+            <button class="qa-btn" onclick="quickPrompt('Write a professional LinkedIn post about my experience launching a startup, include insights and a CTA')">
+              <span class="qa-icon">💼</span>
+              <span class="qa-title">LinkedIn Post</span>
+              <span class="qa-desc">Professional tone & CTA</span>
+            </button>
+            <button class="qa-btn" onclick="quickPrompt('Create an Instagram caption for a minimalist lifestyle photo, include 10 relevant hashtags')">
+              <span class="qa-icon">📸</span>
+              <span class="qa-title">Instagram Caption</span>
+              <span class="qa-desc">Caption + hashtags</span>
+            </button>
+            <button class="qa-btn" onclick="quickPrompt('Write a TikTok video script and caption for a cooking channel sharing a quick pasta recipe')">
+              <span class="qa-icon">🎬</span>
+              <span class="qa-title">TikTok Script</span>
+              <span class="qa-desc">Script + caption</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input area -->
+      <div class="input-area">
+        <div class="input-options">
+          <span class="option-label">Tone:</span>
+          <select class="select-pill" id="tone-select">
+            <option value="engaging">✨ Engaging</option>
+            <option value="professional">💼 Professional</option>
+            <option value="casual">😊 Casual</option>
+            <option value="humorous">😂 Humorous</option>
+            <option value="inspirational">🌟 Inspirational</option>
+            <option value="educational">📚 Educational</option>
+            <option value="promotional">🚀 Promotional</option>
+            <option value="storytelling">📖 Storytelling</option>
+          </select>
+          <span class="option-label">Type:</span>
+          <select class="select-pill" id="type-select">
+            <option value="post">Post</option>
+            <option value="thread">Thread</option>
+            <option value="caption">Caption</option>
+            <option value="hashtags">Hashtags</option>
+            <option value="bio">Bio</option>
+            <option value="ad copy">Ad Copy</option>
+            <option value="story">Story</option>
+            <option value="script">Script</option>
+          </select>
+          <span class="option-label">Length:</span>
+          <select class="select-pill" id="length-select">
+            <option value="short">Short</option>
+            <option value="medium" selected>Medium</option>
+            <option value="long">Long</option>
+          </select>
+        </div>
+        <div class="input-row">
+          <textarea class="input-box" id="user-input" rows="1"
+            placeholder="Describe your post idea, topic, or paste content to rephrase..."
+            onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: preview + settings -->
+    <div class="right-panel">
+      <div class="right-header">
+        📋 Live Preview
+      </div>
+      <div class="right-body">
+
+        <div class="section-title">Post Preview</div>
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-avatar">👤</div>
+            <div class="preview-user-info">
+              <div class="preview-name">Your Name</div>
+              <div class="preview-handle" id="preview-handle">@yourhandle</div>
+            </div>
+          </div>
+          <div class="preview-body" id="preview-text">Your generated content will appear here in real-time as the AI responds...</div>
+          <div class="preview-footer">
+            <span id="preview-platform-label">Platform</span>
+            <span id="preview-char-count">0 chars</span>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px">Tone</div>
+        <div class="tone-grid">
+          <div class="tone-card active" onclick="setTone('engaging', this)"><span class="tone-emoji">✨</span>Engaging</div>
+          <div class="tone-card" onclick="setTone('professional', this)"><span class="tone-emoji">💼</span>Professional</div>
+          <div class="tone-card" onclick="setTone('casual', this)"><span class="tone-emoji">😊</span>Casual</div>
+          <div class="tone-card" onclick="setTone('humorous', this)"><span class="tone-emoji">😂</span>Humorous</div>
+          <div class="tone-card" onclick="setTone('inspirational', this)"><span class="tone-emoji">🌟</span>Inspirational</div>
+          <div class="tone-card" onclick="setTone('educational', this)"><span class="tone-emoji">📚</span>Educational</div>
+        </div>
+
+        <div class="section-title" style="margin-top:4px">Stats</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-val" id="stat-posts">0</div>
+            <div class="stat-label">Posts Generated</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" id="stat-chars">0</div>
+            <div class="stat-label">Chars Written</div>
+          </div>
+        </div>
+
+        <div class="section-title" style="margin-top:4px">Platform Limits</div>
+        <div>
+          <div class="limit-row"><span class="limit-dot dot-twitter"></span><span class="limit-name">Twitter/X</span><span class="limit-val">280 chars</span></div>
+          <div class="limit-row"><span class="limit-dot dot-linkedin"></span><span class="limit-name">LinkedIn</span><span class="limit-val">3,000 chars</span></div>
+          <div class="limit-row"><span class="limit-dot dot-instagram"></span><span class="limit-name">Instagram</span><span class="limit-val">2,200 chars</span></div>
+          <div class="limit-row"><span class="limit-dot dot-facebook"></span><span class="limit-name">Facebook</span><span class="limit-val">63,206 chars</span></div>
+          <div class="limit-row"><span class="limit-dot dot-tiktok"></span><span class="limit-name">TikTok</span><span class="limit-val">2,200 chars</span></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">✅ Copied to clipboard!</div>
+
+<script>
+  // ── CONFIG ────────────────────────────────────
+  // All IBM calls go through the local proxy server (server.js) to avoid CORS
+  const PROXY_URL = "/api/chat";
+
+  const PLATFORM_LIMITS  = { tw:280, li:3000, ig:2200, fb:63206, tt:2200, all:3000 };
+  const PLATFORM_NAMES   = { tw:"Twitter/X", li:"LinkedIn", ig:"Instagram", fb:"Facebook", tt:"TikTok", all:"All Platforms" };
+  const PLATFORM_HANDLES = { tw:"@yourhandle · just now", li:"Your Name · 1st · just now", ig:"@yourhandle · 1s", fb:"Your Name · Just now", tt:"@yourhandle · 0s", all:"@yourhandle · just now" };
+
+  let currentPlatform = "all";
+  let postsGenerated  = 0;
+  let totalChars      = 0;
+  let generatedPosts  = [];
+
+  // ── SYSTEM PROMPT ─────────────────────────────
+  function buildSystemPrompt(platform, tone, type, length) {
+    const name  = PLATFORM_NAMES[platform]  || "Social Media";
+    const limit = PLATFORM_LIMITS[platform] || 3000;
+    return `You are an expert social media content strategist and copywriter with 10+ years of experience creating viral, engaging content for top brands.
+
+TASK: Generate high-quality ${type} content optimized for ${name}.
+
+GUIDELINES:
+- Platform: ${name} (max ${limit} characters per post)
+- Tone: ${tone}
+- Content type: ${type}
+- Length: ${length}
+- Write natural, authentic content that feels human, not AI-generated
+- Use platform-specific best practices and formatting
+- If writing a thread, number each tweet [1/N], [2/N] etc.
+- Include relevant emojis where appropriate for the platform
+- Add 3-10 relevant hashtags at the end if it's a post or caption
+- For LinkedIn: use line breaks for readability, include a CTA
+- For Twitter/X: be punchy, witty, and concise — under 280 chars per tweet
+- For Instagram: focus on visual storytelling, lifestyle language
+- For Facebook: conversational, community-focused
+- For TikTok: trend-aware, energetic, youth-friendly
+
+OUTPUT FORMAT:
+- Return ONLY the post content, no explanations or meta-commentary
+- Start directly with the post text`;
+  }
+
+  // ── CALL LOCAL PROXY → IBM GRANITE ───────────
+  async function callGraniteAPI(userMessage, platform, tone, type, length) {
+    const systemPrompt = buildSystemPrompt(platform, tone, type, length);
+
+    const resp = await fetch(PROXY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user",   content: userMessage  }
+        ],
+        parameters: {
+          max_new_tokens:     1200,
+          temperature:        0.8,
+          top_p:              0.95,
+          repetition_penalty: 1.1
+        }
+      })
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`API Error ${resp.status}: ${errText}`);
+    }
+
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content
+      || data.results?.[0]?.generated_text
+      || "";
+    if (!content) throw new Error("Empty response from model. Please try again.");
+    return content.trim();
+  }
+
+  // ── UI HELPERS ────────────────────────────────
+  function setTab(platform) {
+    currentPlatform = platform;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("tab-" + platform).classList.add("active");
+    updatePreviewHandle(platform);
+  }
+
+  function setSidebarPlatform(platform, el) {
+    document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
+    el.classList.add("active");
+    setTab(platform);
+  }
+
+  function setTone(tone, el) {
+    document.querySelectorAll(".tone-card").forEach(c => c.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("tone-select").value = tone;
+  }
+
+  function updatePreviewHandle(platform) {
+    const el = document.getElementById("preview-handle");
+    const pl = document.getElementById("preview-platform-label");
+    el.textContent = PLATFORM_HANDLES[platform] || "@yourhandle";
+    pl.textContent = PLATFORM_NAMES[platform] || "Platform";
+  }
+
+  function updatePreview(text, platform) {
+    const previewEl = document.getElementById("preview-text");
+    const charEl    = document.getElementById("preview-char-count");
+    previewEl.textContent = text || "Your generated content will appear here...";
+    charEl.textContent = text.length + " chars";
+  }
+
+  function autoResize(el) {
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 160) + "px";
+  }
+
+  function handleKey(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = "✅ " + msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2500);
+  }
+
+  function scrollToBottom() {
+    const c = document.getElementById("chat-messages");
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function hideWelcome() {
+    const w = document.getElementById("welcome-screen");
+    if (w) w.style.display = "none";
+  }
+
+  // ── COPY ──────────────────────────────────────
+  function copyPost(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.classList.add("copied");
+      btn.textContent = "✅ Copied!";
+      showToast("Copied to clipboard!");
+      setTimeout(() => {
+        btn.classList.remove("copied");
+        btn.innerHTML = "📋 Copy";
+      }, 2000);
+    });
+  }
+
+  // ── CHAR METER ────────────────────────────────
+  function buildCharMeter(text, platform) {
+    const limit = PLATFORM_LIMITS[platform] || 3000;
+    const count = text.length;
+    const pct   = Math.min((count / limit) * 100, 100);
+    const cls   = pct < 70 ? "ok" : pct < 90 ? "warn" : "danger";
+    return `<div class="post-chars">
+      <span>${count} / ${limit} chars</span>
+      <div class="chars-bar"><div class="chars-fill ${cls}" style="width:${pct}%"></div></div>
+    </div>`;
+  }
+
+  // ── RENDER POST CARD ──────────────────────────
+  function renderPostCard(text, platform) {
+    const id  = "post-" + Date.now();
+    const tag = PLATFORM_NAMES[platform] || platform;
+    const cls = platform === "all" ? "tw" : platform;
+    const meter = buildCharMeter(text, platform);
+    const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    return `<div class="post-card">
+      <div class="post-card-header">
+        <span class="post-platform-tag ${cls}">
+          ${PLATFORM_NAMES[platform] || platform}
+        </span>
+      </div>
+      <div class="post-text">${safeText}</div>
+      ${meter}
+      <div class="post-actions">
+        <button class="post-action-btn" onclick="copyPost(${JSON.stringify(text)}, this)">📋 Copy</button>
+        <button class="post-action-btn" onclick="regenerate(${JSON.stringify(text)})">🔄 Regenerate</button>
+        <button class="post-action-btn" onclick="tweakPost(${JSON.stringify(text)})">✏️ Tweak</button>
+      </div>
+    </div>`;
+  }
+
+  // ── APPEND MESSAGE ────────────────────────────
+  function appendUserMsg(text) {
+    hideWelcome();
+    const c = document.getElementById("chat-messages");
+    const time = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+    const div = document.createElement("div");
+    div.className = "msg user";
+    div.innerHTML = `
+      <div class="msg-avatar">👤</div>
+      <div class="msg-content">
+        <div class="msg-bubble">${text.replace(/</g,"&lt;")}</div>
+        <div class="msg-meta">${time}</div>
+      </div>`;
+    c.appendChild(div);
+    scrollToBottom();
+  }
+
+  function appendTyping() {
+    const c = document.getElementById("chat-messages");
+    const div = document.createElement("div");
+    div.className = "msg agent";
+    div.id = "typing-msg";
+    div.innerHTML = `
+      <div class="msg-avatar">🤖</div>
+      <div class="msg-content">
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>`;
+    c.appendChild(div);
+    scrollToBottom();
+  }
+
+  function removeTyping() {
+    const t = document.getElementById("typing-msg");
+    if (t) t.remove();
+  }
+
+  function appendAgentMsg(text, platform, isError) {
+    removeTyping();
+    const c = document.getElementById("chat-messages");
+    const time = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
+    const div = document.createElement("div");
+    div.className = "msg agent";
+
+    let inner = "";
+    if (isError) {
+      inner = `<div class="msg-bubble" style="border-color:var(--red);color:var(--red)">⚠️ ${text.replace(/</g,"&lt;")}</div>`;
+    } else {
+      const postHtml = renderPostCard(text, platform);
+      inner = `<div class="msg-bubble">Here's your ${PLATFORM_NAMES[platform] || "social media"} content:${postHtml}</div>`;
+      // Update preview
+      updatePreview(text, platform);
+      // Stats
+      postsGenerated++;
+      totalChars += text.length;
+      document.getElementById("stat-posts").textContent = postsGenerated;
+      document.getElementById("stat-chars").textContent = totalChars > 999 ? (totalChars/1000).toFixed(1)+"k" : totalChars;
+      generatedPosts.push({ text, platform, time: new Date().toISOString() });
+    }
+
+    div.innerHTML = `
+      <div class="msg-avatar">🤖</div>
+      <div class="msg-content">
+        ${inner}
+        <div class="msg-meta">IBM Granite 4 · ${time}</div>
+      </div>`;
+    c.appendChild(div);
+    scrollToBottom();
+  }
+
+  // ── SEND MESSAGE ──────────────────────────────
+  async function sendMessage() {
+    const input = document.getElementById("user-input");
+    const btn   = document.getElementById("send-btn");
+    const msg   = input.value.trim();
+    if (!msg) return;
+
+    const tone   = document.getElementById("tone-select").value;
+    const type   = document.getElementById("type-select").value;
+    const length = document.getElementById("length-select").value;
+    const platform = currentPlatform;
+
+    input.value = "";
+    input.style.height = "auto";
+    btn.disabled = true;
+
+    appendUserMsg(msg);
+    appendTyping();
+
+    try {
+      const result = await callGraniteAPI(msg, platform, tone, type, length);
+      appendAgentMsg(result, platform, false);
+    } catch (err) {
+      appendAgentMsg(err.message || "An error occurred. Please try again.", platform, true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // ── QUICK PROMPT ─────────────────────────────
+  function quickPrompt(text) {
+    document.getElementById("user-input").value = text;
+    sendMessage();
+  }
+
+  // ── REGENERATE / TWEAK ────────────────────────
+  function regenerate(originalText) {
+    quickPrompt("Regenerate this social media post with a fresh angle: " + originalText.slice(0, 120) + "...");
+  }
+
+  function tweakPost(originalText) {
+    document.getElementById("user-input").value = "Tweak and improve this post: " + originalText;
+    document.getElementById("user-input").focus();
+  }
+
+  // ── CLEAR CHAT ────────────────────────────────
+  function clearChat() {
+    const c = document.getElementById("chat-messages");
+    c.innerHTML = `
+      <div class="welcome" id="welcome-screen">
+        <div class="welcome-icon">✨</div>
+        <h2>Social Media Agent</h2>
+        <p>Generate platform-optimised posts, captions, threads, and hashtags instantly using IBM Granite 4 AI. Select a platform and describe your idea.</p>
+        <div class="quick-actions">
+          <button class="qa-btn" onclick="quickPrompt('Write a viral Twitter thread with 5 tweets about the future of AI')">
+            <span class="qa-icon">🔥</span>
+            <span class="qa-title">Viral Thread</span>
+            <span class="qa-desc">Twitter/X thread format</span>
+          </button>
+          <button class="qa-btn" onclick="quickPrompt('Write a professional LinkedIn post about my experience launching a startup, include insights and a CTA')">
+            <span class="qa-icon">💼</span>
+            <span class="qa-title">LinkedIn Post</span>
+            <span class="qa-desc">Professional tone & CTA</span>
+          </button>
+          <button class="qa-btn" onclick="quickPrompt('Create an Instagram caption for a minimalist lifestyle photo, include 10 relevant hashtags')">
+            <span class="qa-icon">📸</span>
+            <span class="qa-title">Instagram Caption</span>
+            <span class="qa-desc">Caption + hashtags</span>
+          </button>
+          <button class="qa-btn" onclick="quickPrompt('Write a TikTok video script and caption for a cooking channel sharing a quick pasta recipe')">
+            <span class="qa-icon">🎬</span>
+            <span class="qa-title">TikTok Script</span>
+            <span class="qa-desc">Script + caption</span>
+          </button>
+        </div>
+      </div>`;
+    updatePreview("", currentPlatform);
+  }
+
+  // ── EXPORT ────────────────────────────────────
+  function exportPosts() {
+    if (generatedPosts.length === 0) {
+      showToast("No posts to export yet!");
+      return;
+    }
+    let out = "SOCIAL MEDIA AGENT — EXPORTED POSTS\n";
+    out += "Generated by IBM Granite 4 on watsonx.ai\n";
+    out += "=".repeat(50) + "\n\n";
+    generatedPosts.forEach((p, i) => {
+      out += `POST ${i+1} — ${PLATFORM_NAMES[p.platform] || p.platform}\n`;
+      out += `Generated: ${p.time}\n`;
+      out += "-".repeat(40) + "\n";
+      out += p.text + "\n\n";
+    });
+    const blob = new Blob([out], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "social-media-posts.txt";
+    a.click();
+  }
+
+  // ── INIT ──────────────────────────────────────
+  updatePreviewHandle("all");
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "social-media-agent",
+  "version": "1.0.0",
+  "description": "Social Media Agent powered by IBM Granite 4 on watsonx.ai",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
