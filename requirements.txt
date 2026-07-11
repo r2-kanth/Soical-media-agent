@@ -1,0 +1,6 @@
+# Node.js dependencies — install with: npm install
+# (This project uses Node.js, not Python — see package.json for the canonical dependency list)
+
+# Runtime dependencies
+express@^4.18.2
+dotenv@^17.4.2
