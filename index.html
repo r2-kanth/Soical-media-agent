@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Social Media Agent — IBM Granite 4</title>
+  <title>SM Buddy — IBM Granite 4</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -11,32 +11,45 @@
 <!-- ── SIDEBAR ────────────────────────────────── -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon">🤖</div>
-    <div>
-      <div class="logo-text">Social Agent</div>
-      <div class="logo-sub">Powered by IBM Granite</div>
-    </div>
+    <img src="assets/logo.png" alt="SM Buddy" class="sidebar-logo-img" />
   </div>
 
   <div class="sidebar-section">
     <div class="sidebar-label">Platforms</div>
     <button class="platform-btn active" onclick="setSidebarPlatform('all', this)">
-      <span class="platform-dot dot-all"></span> All Platforms
+      <span class="plat-icon plat-icon-all">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span> All Platforms
     </button>
     <button class="platform-btn" onclick="setSidebarPlatform('tw', this)">
-      <span class="platform-dot dot-twitter"></span> Twitter / X
+      <span class="plat-icon plat-icon-tw">
+        <!-- X (Twitter) logo -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.738-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </span> Twitter / X
     </button>
     <button class="platform-btn" onclick="setSidebarPlatform('li', this)">
-      <span class="platform-dot dot-linkedin"></span> LinkedIn
+      <span class="plat-icon plat-icon-li">
+        <!-- LinkedIn logo -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </span> LinkedIn
     </button>
     <button class="platform-btn" onclick="setSidebarPlatform('ig', this)">
-      <span class="platform-dot dot-instagram"></span> Instagram
+      <span class="plat-icon plat-icon-ig">
+        <!-- Instagram logo -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </span> Instagram
     </button>
     <button class="platform-btn" onclick="setSidebarPlatform('fb', this)">
-      <span class="platform-dot dot-facebook"></span> Facebook
+      <span class="plat-icon plat-icon-fb">
+        <!-- Facebook logo -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </span> Facebook
     </button>
     <button class="platform-btn" onclick="setSidebarPlatform('tt', this)">
-      <span class="platform-dot dot-tiktok"></span> TikTok
+      <span class="plat-icon plat-icon-tt">
+        <!-- TikTok logo -->
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+      </span> TikTok
     </button>
   </div>
 
@@ -45,19 +58,19 @@
   <div class="sidebar-section">
     <div class="sidebar-label">Quick Prompts</div>
     <button class="history-item" onclick="quickPrompt('Write a viral Twitter thread about AI trends in 2025')">
-      <span class="history-icon">🔥</span> AI Trends Thread
+      <span class="history-icon plat-icon-tw"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.738-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span> AI Trends Thread
     </button>
     <button class="history-item" onclick="quickPrompt('Write a professional LinkedIn post about leadership lessons')">
-      <span class="history-icon">💼</span> Leadership Post
+      <span class="history-icon plat-icon-li"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span> Leadership Post
     </button>
     <button class="history-item" onclick="quickPrompt('Create an engaging Instagram caption for a product launch')">
-      <span class="history-icon">📸</span> Product Launch
+      <span class="history-icon plat-icon-ig"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></span> Product Launch
     </button>
     <button class="history-item" onclick="quickPrompt('Write a Facebook post to announce a community event')">
-      <span class="history-icon">🎉</span> Event Announcement
+      <span class="history-icon plat-icon-fb"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span> Event Announcement
     </button>
     <button class="history-item" onclick="quickPrompt('Create 10 trending hashtags for a fitness brand')">
-      <span class="history-icon">#️⃣</span> Hashtag Generator
+      <span class="history-icon" style="font-size:12px;font-weight:800;color:var(--accent)">#</span> Hashtag Generator
     </button>
   </div>
 
@@ -79,27 +92,28 @@
   <div class="topbar">
     <div class="platform-tabs">
       <button class="tab-btn active all" id="tab-all" onclick="setTab('all')">
-        <span class="tab-icon">🌐</span> All
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span> All
       </button>
       <button class="tab-btn tw" id="tab-tw" onclick="setTab('tw')">
-        <span class="tab-icon">𝕏</span> Twitter
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.738-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span> Twitter
       </button>
       <button class="tab-btn li" id="tab-li" onclick="setTab('li')">
-        <span class="tab-icon">in</span> LinkedIn
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span> LinkedIn
       </button>
       <button class="tab-btn ig" id="tab-ig" onclick="setTab('ig')">
-        <span class="tab-icon">📷</span> Instagram
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></span> Instagram
       </button>
       <button class="tab-btn fb" id="tab-fb" onclick="setTab('fb')">
-        <span class="tab-icon">f</span> Facebook
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></span> Facebook
       </button>
       <button class="tab-btn tt" id="tab-tt" onclick="setTab('tt')">
-        <span class="tab-icon">♪</span> TikTok
+        <span class="tab-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></span> TikTok
       </button>
     </div>
     <div class="topbar-actions">
-      <button class="icon-btn" title="Clear chat" onclick="clearChat()">🗑</button>
-      <button class="icon-btn" title="Export posts" onclick="exportPosts()">⬇</button>
+      <button class="icon-btn" title="Clear chat" onclick="clearChat()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+      </button>
     </div>
   </div>
 
@@ -112,27 +126,37 @@
 
         <!-- Welcome -->
         <div class="welcome" id="welcome-screen">
-          <div class="welcome-icon">✨</div>
-          <h2>Social Media Agent</h2>
+          <div class="welcome-icon">
+            <img src="assets/logo.png" alt="SM Buddy" class="welcome-logo-img" />
+          </div>
+          <h2>SM Buddy</h2>
           <p>Generate platform-optimised posts, captions, threads, and hashtags instantly using IBM Granite 4 AI. Select a platform and describe your idea.</p>
           <div class="quick-actions">
             <button class="qa-btn" onclick="quickPrompt('Write a viral Twitter thread with 5 tweets about the future of AI')">
-              <span class="qa-icon">🔥</span>
+              <span class="qa-icon qa-icon-tw">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.738-8.835L1.254 2.25H8.08l4.261 5.632 5.903-5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </span>
               <span class="qa-title">Viral Thread</span>
               <span class="qa-desc">Twitter/X thread format</span>
             </button>
             <button class="qa-btn" onclick="quickPrompt('Write a professional LinkedIn post about my experience launching a startup, include insights and a CTA')">
-              <span class="qa-icon">💼</span>
+              <span class="qa-icon qa-icon-li">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </span>
               <span class="qa-title">LinkedIn Post</span>
               <span class="qa-desc">Professional tone & CTA</span>
             </button>
             <button class="qa-btn" onclick="quickPrompt('Create an Instagram caption for a minimalist lifestyle photo, include 10 relevant hashtags')">
-              <span class="qa-icon">📸</span>
+              <span class="qa-icon qa-icon-ig">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </span>
               <span class="qa-title">Instagram Caption</span>
               <span class="qa-desc">Caption + hashtags</span>
             </button>
             <button class="qa-btn" onclick="quickPrompt('Write a TikTok video script and caption for a cooking channel sharing a quick pasta recipe')">
-              <span class="qa-icon">🎬</span>
+              <span class="qa-icon qa-icon-tt">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+              </span>
               <span class="qa-title">TikTok Script</span>
               <span class="qa-desc">Script + caption</span>
             </button>
@@ -146,14 +170,14 @@
         <div class="input-options">
           <span class="option-label">Tone:</span>
           <select class="select-pill" id="tone-select">
-            <option value="engaging">✨ Engaging</option>
-            <option value="professional">💼 Professional</option>
-            <option value="casual">😊 Casual</option>
-            <option value="humorous">😂 Humorous</option>
-            <option value="inspirational">🌟 Inspirational</option>
-            <option value="educational">📚 Educational</option>
-            <option value="promotional">🚀 Promotional</option>
-            <option value="storytelling">📖 Storytelling</option>
+            <option value="engaging">★ Engaging</option>
+            <option value="professional">▲ Professional</option>
+            <option value="casual">◉ Casual</option>
+            <option value="humorous">◎ Humorous</option>
+            <option value="inspirational">✦ Inspirational</option>
+            <option value="educational">◈ Educational</option>
+            <option value="promotional">▶ Promotional</option>
+            <option value="storytelling">◆ Storytelling</option>
           </select>
           <span class="option-label">Type:</span>
           <select class="select-pill" id="type-select">
@@ -177,45 +201,44 @@
           <textarea class="input-box" id="user-input" rows="1"
             placeholder="Describe your post idea, topic, or paste content to rephrase..."
             onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-          <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Right panel: preview + settings -->
+    <!-- Right panel: tone + stats -->
     <div class="right-panel">
       <div class="right-header">
-        📋 Live Preview
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+        Settings
       </div>
       <div class="right-body">
 
-        <div class="section-title">Post Preview</div>
-        <div class="preview-card">
-          <div class="preview-card-header">
-            <div class="preview-avatar">👤</div>
-            <div class="preview-user-info">
-              <div class="preview-name">Your Name</div>
-              <div class="preview-handle" id="preview-handle">@yourhandle</div>
-            </div>
-          </div>
-          <div class="preview-body" id="preview-text">Your generated content will appear here in real-time as the AI responds...</div>
-          <div class="preview-footer">
-            <span id="preview-platform-label">Platform</span>
-            <span id="preview-char-count">0 chars</span>
-          </div>
-        </div>
-
-        <div class="section-title" style="margin-top:16px">Tone</div>
+        <div class="section-title">Tone</div>
         <div class="tone-grid">
-          <div class="tone-card active" onclick="setTone('engaging', this)"><span class="tone-emoji">✨</span>Engaging</div>
-          <div class="tone-card" onclick="setTone('professional', this)"><span class="tone-emoji">💼</span>Professional</div>
-          <div class="tone-card" onclick="setTone('casual', this)"><span class="tone-emoji">😊</span>Casual</div>
-          <div class="tone-card" onclick="setTone('humorous', this)"><span class="tone-emoji">😂</span>Humorous</div>
-          <div class="tone-card" onclick="setTone('inspirational', this)"><span class="tone-emoji">🌟</span>Inspirational</div>
-          <div class="tone-card" onclick="setTone('educational', this)"><span class="tone-emoji">📚</span>Educational</div>
+          <div class="tone-card active" onclick="setTone('engaging', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Engaging
+          </div>
+          <div class="tone-card" onclick="setTone('professional', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span>Professional
+          </div>
+          <div class="tone-card" onclick="setTone('casual', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Casual
+          </div>
+          <div class="tone-card" onclick="setTone('humorous', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>Humorous
+          </div>
+          <div class="tone-card" onclick="setTone('inspirational', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>Inspirational
+          </div>
+          <div class="tone-card" onclick="setTone('educational', this)">
+            <span class="tone-emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>Educational
+          </div>
         </div>
 
-        <div class="section-title" style="margin-top:4px">Stats</div>
+        <div class="section-title" style="margin-top:16px">Stats</div>
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-val" id="stat-posts">0</div>
@@ -227,7 +250,7 @@
           </div>
         </div>
 
-        <div class="section-title" style="margin-top:4px">Platform Limits</div>
+        <div class="section-title" style="margin-top:16px">Platform Limits</div>
         <div>
           <div class="limit-row"><span class="limit-dot dot-twitter"></span><span class="limit-name">Twitter/X</span><span class="limit-val">280 chars</span></div>
           <div class="limit-row"><span class="limit-dot dot-linkedin"></span><span class="limit-name">LinkedIn</span><span class="limit-val">3,000 chars</span></div>
@@ -243,373 +266,11 @@
 </div>
 
 <!-- Toast notification -->
-<div class="toast" id="toast">✅ Copied to clipboard!</div>
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  Copied to clipboard!
+</div>
 
-<script>
-  // ── CONFIG ────────────────────────────────────
-  // All IBM calls go through the local proxy server (server.js) to avoid CORS
-  const PROXY_URL = "/api/chat";
-
-  const PLATFORM_LIMITS  = { tw:280, li:3000, ig:2200, fb:63206, tt:2200, all:3000 };
-  const PLATFORM_NAMES   = { tw:"Twitter/X", li:"LinkedIn", ig:"Instagram", fb:"Facebook", tt:"TikTok", all:"All Platforms" };
-  const PLATFORM_HANDLES = { tw:"@yourhandle · just now", li:"Your Name · 1st · just now", ig:"@yourhandle · 1s", fb:"Your Name · Just now", tt:"@yourhandle · 0s", all:"@yourhandle · just now" };
-
-  let currentPlatform = "all";
-  let postsGenerated  = 0;
-  let totalChars      = 0;
-  let generatedPosts  = [];
-
-  // ── SYSTEM PROMPT ─────────────────────────────
-  function buildSystemPrompt(platform, tone, type, length) {
-    const name  = PLATFORM_NAMES[platform]  || "Social Media";
-    const limit = PLATFORM_LIMITS[platform] || 3000;
-    return `You are an expert social media content strategist and copywriter with 10+ years of experience creating viral, engaging content for top brands.
-
-TASK: Generate high-quality ${type} content optimized for ${name}.
-
-GUIDELINES:
-- Platform: ${name} (max ${limit} characters per post)
-- Tone: ${tone}
-- Content type: ${type}
-- Length: ${length}
-- Write natural, authentic content that feels human, not AI-generated
-- Use platform-specific best practices and formatting
-- If writing a thread, number each tweet [1/N], [2/N] etc.
-- Include relevant emojis where appropriate for the platform
-- Add 3-10 relevant hashtags at the end if it's a post or caption
-- For LinkedIn: use line breaks for readability, include a CTA
-- For Twitter/X: be punchy, witty, and concise — under 280 chars per tweet
-- For Instagram: focus on visual storytelling, lifestyle language
-- For Facebook: conversational, community-focused
-- For TikTok: trend-aware, energetic, youth-friendly
-
-OUTPUT FORMAT:
-- Return ONLY the post content, no explanations or meta-commentary
-- Start directly with the post text`;
-  }
-
-  // ── CALL LOCAL PROXY → IBM GRANITE ───────────
-  async function callGraniteAPI(userMessage, platform, tone, type, length) {
-    const systemPrompt = buildSystemPrompt(platform, tone, type, length);
-
-    const resp = await fetch(PROXY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user",   content: userMessage  }
-        ],
-        parameters: {
-          max_new_tokens:     1200,
-          temperature:        0.8,
-          top_p:              0.95,
-          repetition_penalty: 1.1
-        }
-      })
-    });
-
-    if (!resp.ok) {
-      const errText = await resp.text();
-      throw new Error(`API Error ${resp.status}: ${errText}`);
-    }
-
-    const data = await resp.json();
-    const content = data.choices?.[0]?.message?.content
-      || data.results?.[0]?.generated_text
-      || "";
-    if (!content) throw new Error("Empty response from model. Please try again.");
-    return content.trim();
-  }
-
-  // ── UI HELPERS ────────────────────────────────
-  function setTab(platform) {
-    currentPlatform = platform;
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById("tab-" + platform).classList.add("active");
-    updatePreviewHandle(platform);
-  }
-
-  function setSidebarPlatform(platform, el) {
-    document.querySelectorAll(".platform-btn").forEach(b => b.classList.remove("active"));
-    el.classList.add("active");
-    setTab(platform);
-  }
-
-  function setTone(tone, el) {
-    document.querySelectorAll(".tone-card").forEach(c => c.classList.remove("active"));
-    el.classList.add("active");
-    document.getElementById("tone-select").value = tone;
-  }
-
-  function updatePreviewHandle(platform) {
-    const el = document.getElementById("preview-handle");
-    const pl = document.getElementById("preview-platform-label");
-    el.textContent = PLATFORM_HANDLES[platform] || "@yourhandle";
-    pl.textContent = PLATFORM_NAMES[platform] || "Platform";
-  }
-
-  function updatePreview(text, platform) {
-    const previewEl = document.getElementById("preview-text");
-    const charEl    = document.getElementById("preview-char-count");
-    previewEl.textContent = text || "Your generated content will appear here...";
-    charEl.textContent = text.length + " chars";
-  }
-
-  function autoResize(el) {
-    el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, 160) + "px";
-  }
-
-  function handleKey(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById("toast");
-    t.textContent = "✅ " + msg;
-    t.classList.add("show");
-    setTimeout(() => t.classList.remove("show"), 2500);
-  }
-
-  function scrollToBottom() {
-    const c = document.getElementById("chat-messages");
-    c.scrollTop = c.scrollHeight;
-  }
-
-  function hideWelcome() {
-    const w = document.getElementById("welcome-screen");
-    if (w) w.style.display = "none";
-  }
-
-  // ── COPY ──────────────────────────────────────
-  function copyPost(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-      btn.classList.add("copied");
-      btn.textContent = "✅ Copied!";
-      showToast("Copied to clipboard!");
-      setTimeout(() => {
-        btn.classList.remove("copied");
-        btn.innerHTML = "📋 Copy";
-      }, 2000);
-    });
-  }
-
-  // ── CHAR METER ────────────────────────────────
-  function buildCharMeter(text, platform) {
-    const limit = PLATFORM_LIMITS[platform] || 3000;
-    const count = text.length;
-    const pct   = Math.min((count / limit) * 100, 100);
-    const cls   = pct < 70 ? "ok" : pct < 90 ? "warn" : "danger";
-    return `<div class="post-chars">
-      <span>${count} / ${limit} chars</span>
-      <div class="chars-bar"><div class="chars-fill ${cls}" style="width:${pct}%"></div></div>
-    </div>`;
-  }
-
-  // ── RENDER POST CARD ──────────────────────────
-  function renderPostCard(text, platform) {
-    const id  = "post-" + Date.now();
-    const tag = PLATFORM_NAMES[platform] || platform;
-    const cls = platform === "all" ? "tw" : platform;
-    const meter = buildCharMeter(text, platform);
-    const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-    return `<div class="post-card">
-      <div class="post-card-header">
-        <span class="post-platform-tag ${cls}">
-          ${PLATFORM_NAMES[platform] || platform}
-        </span>
-      </div>
-      <div class="post-text">${safeText}</div>
-      ${meter}
-      <div class="post-actions">
-        <button class="post-action-btn" onclick="copyPost(${JSON.stringify(text)}, this)">📋 Copy</button>
-        <button class="post-action-btn" onclick="regenerate(${JSON.stringify(text)})">🔄 Regenerate</button>
-        <button class="post-action-btn" onclick="tweakPost(${JSON.stringify(text)})">✏️ Tweak</button>
-      </div>
-    </div>`;
-  }
-
-  // ── APPEND MESSAGE ────────────────────────────
-  function appendUserMsg(text) {
-    hideWelcome();
-    const c = document.getElementById("chat-messages");
-    const time = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
-    const div = document.createElement("div");
-    div.className = "msg user";
-    div.innerHTML = `
-      <div class="msg-avatar">👤</div>
-      <div class="msg-content">
-        <div class="msg-bubble">${text.replace(/</g,"&lt;")}</div>
-        <div class="msg-meta">${time}</div>
-      </div>`;
-    c.appendChild(div);
-    scrollToBottom();
-  }
-
-  function appendTyping() {
-    const c = document.getElementById("chat-messages");
-    const div = document.createElement("div");
-    div.className = "msg agent";
-    div.id = "typing-msg";
-    div.innerHTML = `
-      <div class="msg-avatar">🤖</div>
-      <div class="msg-content">
-        <div class="typing-indicator">
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-        </div>
-      </div>`;
-    c.appendChild(div);
-    scrollToBottom();
-  }
-
-  function removeTyping() {
-    const t = document.getElementById("typing-msg");
-    if (t) t.remove();
-  }
-
-  function appendAgentMsg(text, platform, isError) {
-    removeTyping();
-    const c = document.getElementById("chat-messages");
-    const time = new Date().toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" });
-    const div = document.createElement("div");
-    div.className = "msg agent";
-
-    let inner = "";
-    if (isError) {
-      inner = `<div class="msg-bubble" style="border-color:var(--red);color:var(--red)">⚠️ ${text.replace(/</g,"&lt;")}</div>`;
-    } else {
-      const postHtml = renderPostCard(text, platform);
-      inner = `<div class="msg-bubble">Here's your ${PLATFORM_NAMES[platform] || "social media"} content:${postHtml}</div>`;
-      // Update preview
-      updatePreview(text, platform);
-      // Stats
-      postsGenerated++;
-      totalChars += text.length;
-      document.getElementById("stat-posts").textContent = postsGenerated;
-      document.getElementById("stat-chars").textContent = totalChars > 999 ? (totalChars/1000).toFixed(1)+"k" : totalChars;
-      generatedPosts.push({ text, platform, time: new Date().toISOString() });
-    }
-
-    div.innerHTML = `
-      <div class="msg-avatar">🤖</div>
-      <div class="msg-content">
-        ${inner}
-        <div class="msg-meta">IBM Granite 4 · ${time}</div>
-      </div>`;
-    c.appendChild(div);
-    scrollToBottom();
-  }
-
-  // ── SEND MESSAGE ──────────────────────────────
-  async function sendMessage() {
-    const input = document.getElementById("user-input");
-    const btn   = document.getElementById("send-btn");
-    const msg   = input.value.trim();
-    if (!msg) return;
-
-    const tone   = document.getElementById("tone-select").value;
-    const type   = document.getElementById("type-select").value;
-    const length = document.getElementById("length-select").value;
-    const platform = currentPlatform;
-
-    input.value = "";
-    input.style.height = "auto";
-    btn.disabled = true;
-
-    appendUserMsg(msg);
-    appendTyping();
-
-    try {
-      const result = await callGraniteAPI(msg, platform, tone, type, length);
-      appendAgentMsg(result, platform, false);
-    } catch (err) {
-      appendAgentMsg(err.message || "An error occurred. Please try again.", platform, true);
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  // ── QUICK PROMPT ─────────────────────────────
-  function quickPrompt(text) {
-    document.getElementById("user-input").value = text;
-    sendMessage();
-  }
-
-  // ── REGENERATE / TWEAK ────────────────────────
-  function regenerate(originalText) {
-    quickPrompt("Regenerate this social media post with a fresh angle: " + originalText.slice(0, 120) + "...");
-  }
-
-  function tweakPost(originalText) {
-    document.getElementById("user-input").value = "Tweak and improve this post: " + originalText;
-    document.getElementById("user-input").focus();
-  }
-
-  // ── CLEAR CHAT ────────────────────────────────
-  function clearChat() {
-    const c = document.getElementById("chat-messages");
-    c.innerHTML = `
-      <div class="welcome" id="welcome-screen">
-        <div class="welcome-icon">✨</div>
-        <h2>Social Media Agent</h2>
-        <p>Generate platform-optimised posts, captions, threads, and hashtags instantly using IBM Granite 4 AI. Select a platform and describe your idea.</p>
-        <div class="quick-actions">
-          <button class="qa-btn" onclick="quickPrompt('Write a viral Twitter thread with 5 tweets about the future of AI')">
-            <span class="qa-icon">🔥</span>
-            <span class="qa-title">Viral Thread</span>
-            <span class="qa-desc">Twitter/X thread format</span>
-          </button>
-          <button class="qa-btn" onclick="quickPrompt('Write a professional LinkedIn post about my experience launching a startup, include insights and a CTA')">
-            <span class="qa-icon">💼</span>
-            <span class="qa-title">LinkedIn Post</span>
-            <span class="qa-desc">Professional tone & CTA</span>
-          </button>
-          <button class="qa-btn" onclick="quickPrompt('Create an Instagram caption for a minimalist lifestyle photo, include 10 relevant hashtags')">
-            <span class="qa-icon">📸</span>
-            <span class="qa-title">Instagram Caption</span>
-            <span class="qa-desc">Caption + hashtags</span>
-          </button>
-          <button class="qa-btn" onclick="quickPrompt('Write a TikTok video script and caption for a cooking channel sharing a quick pasta recipe')">
-            <span class="qa-icon">🎬</span>
-            <span class="qa-title">TikTok Script</span>
-            <span class="qa-desc">Script + caption</span>
-          </button>
-        </div>
-      </div>`;
-    updatePreview("", currentPlatform);
-  }
-
-  // ── EXPORT ────────────────────────────────────
-  function exportPosts() {
-    if (generatedPosts.length === 0) {
-      showToast("No posts to export yet!");
-      return;
-    }
-    let out = "SOCIAL MEDIA AGENT — EXPORTED POSTS\n";
-    out += "Generated by IBM Granite 4 on watsonx.ai\n";
-    out += "=".repeat(50) + "\n\n";
-    generatedPosts.forEach((p, i) => {
-      out += `POST ${i+1} — ${PLATFORM_NAMES[p.platform] || p.platform}\n`;
-      out += `Generated: ${p.time}\n`;
-      out += "-".repeat(40) + "\n";
-      out += p.text + "\n\n";
-    });
-    const blob = new Blob([out], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "social-media-posts.txt";
-    a.click();
-  }
-
-  // ── INIT ──────────────────────────────────────
-  updatePreviewHandle("all");
-</script>
+<script src="javascript/app.js"></script>
 </body>
 </html>

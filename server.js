@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const path    = require("path");
 const https   = require("https");
@@ -7,10 +9,10 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // ── CONFIG ────────────────────────────────────
-const IBM_API_KEY   = "AlT9GiVi0i2YAyXs-Fcs9AEBUMAuGzxFpEnEZQ7riT0d";
-const PROJECT_ID    = "bcc8f6b2-fb77-44f1-a802-385b2c772b73";
-const MODEL_ID      = "ibm/granite-4-h-small";
-const WATSONX_URL   = "https://eu-de.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29";
+const IBM_API_KEY   = process.env.IBM_API_KEY;
+const PROJECT_ID    = process.env.PROJECT_ID    || "bcc8f6b2-fb77-44f1-a802-385b2c772b73";
+const MODEL_ID      = process.env.MODEL_ID      || "ibm/granite-4-h-small";
+const WATSONX_URL   = process.env.WATSONX_URL   || "https://eu-de.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29";
 const IAM_URL       = "https://iam.cloud.ibm.com/identity/token";
 
 app.use(express.json());
