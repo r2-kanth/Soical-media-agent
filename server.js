@@ -117,15 +117,18 @@ app.get("/api/health", (_req, res) => {
 // ── START SERVER ──────────────────────────────
 function startServer(port) {
   const server = app.listen(port, () => {
-    console.log(`\n  Social Media Agent running on port ${port}`);
-    console.log(`  Model   : ${MODEL_ID}`);
-    console.log(`  Project : ${PROJECT_ID}`);
-    console.log(`  Region  : ${WATSONX_URL.split(".ml.cloud")[0].replace("https://","")}\n`);
+    console.log(`\n  ┌─────────────────────────────────────────┐`);
+    console.log(`  │       SM Buddy — IBM Granite 4          │`);
+    console.log(`  ├─────────────────────────────────────────┤`);
+    console.log(`  │  🌐  Local:   http://localhost:${port}      │`);
+    console.log(`  │  🤖  Model:   ${MODEL_ID}   │`);
+    console.log(`  │  🌍  Region:  ${WATSONX_URL.split(".ml.cloud")[0].replace("https://","")}                  │`);
+    console.log(`  └─────────────────────────────────────────┘\n`);
   });
 
   server.on("error", (err) => {
     if (err.code === "EADDRINUSE") {
-      console.warn(`Port ${port} in use, trying ${port + 1}...`);
+      console.warn(`  ⚠️  Port ${port} in use, trying ${port + 1}...`);
       startServer(port + 1);
     } else {
       console.error("Server error:", err);
