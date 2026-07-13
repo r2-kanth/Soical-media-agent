@@ -193,6 +193,12 @@ Check that `MODEL_ID` and `PROJECT_ID` in `.env` match your watsonx.ai project.
 
 All IBM API calls use Node's built-in `https` module — no extra HTTP client needed.
 
+
+# Social Media Agent
+
+## 🚀 Live Demo
+
+https://soical-media-agent-2.onrender.com
 ---
 
 ## 📄 License
