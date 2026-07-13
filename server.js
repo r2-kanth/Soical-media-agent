@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 
 // ── CONFIG ────────────────────────────────────
 const IBM_API_KEY   = process.env.IBM_API_KEY;
+if (!IBM_API_KEY) {
+  console.error("FATAL: IBM_API_KEY environment variable is not set.");
+  process.exit(1);
+}
 const PROJECT_ID    = process.env.PROJECT_ID    || "bcc8f6b2-fb77-44f1-a802-385b2c772b73";
 const MODEL_ID      = process.env.MODEL_ID      || "ibm/granite-4-h-small";
 const WATSONX_URL   = process.env.WATSONX_URL   || "https://eu-de.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29";
