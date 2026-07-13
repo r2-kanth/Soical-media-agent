@@ -94,9 +94,15 @@ function setTone(tone, el) {
   document.getElementById("tone-select").value = tone;
 }
 
-function updatePreviewHandle(platform) {}
+function updatePreviewHandle(platform) {
+  const handleEl = document.getElementById("preview-handle");
+  if (handleEl) handleEl.textContent = PLATFORM_HANDLES[platform] || "@yourhandle";
+}
 
-function updatePreview(text, platform) {}
+function updatePreview(text, platform) {
+  const bodyEl = document.getElementById("preview-body");
+  if (bodyEl) bodyEl.textContent = text;
+}
 
 function autoResize(el) {
   el.style.height = "auto";
@@ -110,9 +116,11 @@ function handleKey(e) {
   }
 }
 
-function showToast(msg) {
+function showToast(msg, isError) {
   const t = document.getElementById("toast");
-  t.textContent = "✅ " + msg;
+  const icon = isError ? "⚠️" : "✅";
+  t.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${isError ? '<line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/><circle cx="12" cy="12" r="10"/>' : '<polyline points="20 6 9 17 4 12"/>'}</svg> ${msg}`;
+  t.classList.toggle("error-toast", !!isError);
   t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 2500);
 }
@@ -156,7 +164,7 @@ function buildCharMeter(text, platform) {
 function renderPostCard(text, platform) {
   const id  = "post-" + Date.now();
   const tag = PLATFORM_NAMES[platform] || platform;
-  const cls = platform === "all" ? "tw" : platform;
+  const cls = platform;
   const meter = buildCharMeter(text, platform);
   const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -286,7 +294,8 @@ function quickPrompt(text) {
 
 // ── REGENERATE / TWEAK ────────────────────────
 function regenerate(originalText) {
-  quickPrompt("Regenerate this social media post with a fresh angle: " + originalText.slice(0, 120) + "...");
+  const snippet = originalText.length > 120 ? originalText.slice(0, 120) + "..." : originalText;
+  quickPrompt("Regenerate this social media post with a fresh angle: " + snippet);
 }
 
 function tweakPost(originalText) {
@@ -331,7 +340,7 @@ function clearChat() {
 // ── EXPORT ────────────────────────────────────
 function exportPosts() {
   if (generatedPosts.length === 0) {
-    showToast("No posts to export yet!");
+    showToast("No posts to export yet!", true);
     return;
   }
   let out = "SOCIAL MEDIA AGENT — EXPORTED POSTS\n";

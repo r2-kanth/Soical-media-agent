@@ -44,7 +44,7 @@ sm-buddy/
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v16 or higher
+- [Node.js](https://nodejs.org/) v18 or higher
 - An IBM watsonx.ai account with a valid API key
 
 ### 1. Install dependencies
@@ -191,7 +191,7 @@ Check that `MODEL_ID` and `PROJECT_ID` in `.env` match your watsonx.ai project.
 | `express` | HTTP server and static file serving |
 | `dotenv` | Loads `.env` credentials into `process.env` |
 
-All IBM API calls use Node's built-in `https` module — no extra HTTP client needed.
+All IBM API calls use Node's built-in `fetch` API (requires Node ≥ 18) — no extra HTTP client needed.
 
 
 # Social Media Agent
